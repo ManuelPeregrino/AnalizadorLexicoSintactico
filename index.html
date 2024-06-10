@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntax Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Lexer Syntax Analyzer</h1>
+        <form id="analyzerForm">
+            <div class="form-group">
+                <label for="codeInput">Enter your code:</label>
+                <textarea class="form-control" id="codeInput" rows="10" placeholder="Enter code here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze Syntax</button>
+        </form>
+        <h2 class="mt-4">Results:</h2>
+        <pre id="results"></pre>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#analyzerForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/analyze', // Flask route
+                    data: {
+                        code: $('#codeInput').val()
+                    },
+                    success: function(response) {
+                        $('#results').text(response.result);
+                    },
+                    error: function() {
+                        $('#results').text('Error: Something went wrong with the syntax analysis.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
